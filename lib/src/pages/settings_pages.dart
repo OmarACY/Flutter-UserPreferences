@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:userpreferences/src/widgets/menu_widget.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -21,7 +22,23 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   void initState() {
     super.initState();
+    _loadPrefs();
     _textController = new TextEditingController( text: _name);
+  }
+
+  _loadPrefs() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    _genre = prefs.getInt('genre');
+    setState(() { });
+  }
+
+  _setSelectedRadio(int value) async {
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setInt('genre', value);
+
+    _genre = value;
+    setState(() { });
   }
 
   @override
@@ -51,20 +68,14 @@ class _SettingsPageState extends State<SettingsPage> {
               value: 1,
               title: Text('Masculino'),
               groupValue: _genre,
-              onChanged: (value) {
-                setState(() {
-                _genre = value;
-                });
-              }),
+              onChanged: _setSelectedRadio
+          ),
           RadioListTile(
               value: 2,
               title: Text('Femenino'),
               groupValue: _genre,
-              onChanged: (value) {
-                setState(() {
-                  _genre = value;
-                });
-              }),
+              onChanged: _setSelectedRadio
+          ),
           Divider(),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 20.0),
