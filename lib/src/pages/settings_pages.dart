@@ -14,7 +14,7 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
 
   bool _secondaryColor = true;
-  int _genre = 1;
+  int _gender = 1;
   String _name = 'Pedro';
 
   TextEditingController _textController;
@@ -28,16 +28,16 @@ class _SettingsPageState extends State<SettingsPage> {
 
   _loadPrefs() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    _genre = prefs.getInt('genre');
+    _gender = prefs.getInt('gender');
     setState(() { });
   }
 
   _setSelectedRadio(int value) async {
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setInt('genre', value);
+    prefs.setInt('gender', value);
 
-    _genre = value;
+    _gender = value;
     setState(() { });
   }
 
@@ -67,13 +67,13 @@ class _SettingsPageState extends State<SettingsPage> {
           RadioListTile(
               value: 1,
               title: Text('Masculino'),
-              groupValue: _genre,
+              groupValue: _gender,
               onChanged: _setSelectedRadio
           ),
           RadioListTile(
               value: 2,
               title: Text('Femenino'),
-              groupValue: _genre,
+              groupValue: _gender,
               onChanged: _setSelectedRadio
           ),
           Divider(),
