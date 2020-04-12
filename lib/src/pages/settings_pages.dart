@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:userpreferences/src/shared_prefs/user_preferences.dart';
 import 'package:userpreferences/src/widgets/menu_widget.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -13,30 +13,24 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
 
-  bool _secondaryColor = true;
-  int _gender = 1;
+  bool _secondaryColor;
+  int _gender;
   String _name = 'Pedro';
 
   TextEditingController _textController;
 
+  final prefs = new UserPreferences();
+
   @override
   void initState() {
     super.initState();
-    _loadPrefs();
-    _textController = new TextEditingController( text: _name);
+    _gender = prefs.gender;
+    _secondaryColor = prefs.secondaryColor;
+    _textController = new TextEditingController( text: prefs.userName );
   }
 
-  _loadPrefs() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    _gender = prefs.getInt('gender');
-    setState(() { });
-  }
-
-  _setSelectedRadio(int value) async {
-
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setInt('gender', value);
-
+  _setSelectedRadio(int value) {
+    prefs.gender = value;
     _gender = value;
     setState(() { });
   }
@@ -46,6 +40,7 @@ class _SettingsPageState extends State<SettingsPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Ajustes'),
+        backgroundColor: (prefs.secondaryColor) ? Colors.teal : Colors.blue,
       ),
       drawer: MenuWidget(),
       body:ListView(
@@ -61,6 +56,7 @@ class _SettingsPageState extends State<SettingsPage> {
             onChanged: (value){
               setState(() {
                 _secondaryColor = value;
+                prefs.secondaryColor = value;
               });
             },
           ),
@@ -86,7 +82,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 helperText: 'Nombre de la persona'
               ),
               onChanged: (value){
-
+                prefs.userName = value;
               },
             ),
           )

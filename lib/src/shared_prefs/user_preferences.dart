@@ -16,12 +16,31 @@ class UserPreferences {
     this._prefs = await SharedPreferences.getInstance();
   }
 
+  // GET and SET for gender
   get gender {
     return _prefs.getInt('gender') ?? 1;
   }
 
   set gender (int value){
     _prefs.setInt('gender', value);
+  }
+
+  // GET and SET for secondaryColor
+  get secondaryColor {
+    return _prefs.getBool('secondaryColor') ?? true;
+  }
+
+  set secondaryColor (bool value){
+    _prefs.setBool('secondaryColor', value);
+  }
+
+  // GET and SET for userName
+  get userName {
+    return _prefs.getString('userName') ?? '';
+  }
+
+  set userName (String value){
+    _prefs.setString('userName', value);
   }
 
 }
